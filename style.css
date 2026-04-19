@@ -1,0 +1,479 @@
+/* RESET */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* BODY */
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
+                url('https://plus.unsplash.com/premium_photo-1661883237884-263e8de8869b?w=1000&auto=format&fit=crop&q=60');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed; /* Keeps background still so card stays on top */
+    color: white;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+/* DASHBOARD HERO */
+.premium-hero {
+    text-align: center;
+    padding: 60px 20px;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    margin-bottom: 40px;
+    border: 1px solid rgba(201, 145, 105, 0.2);
+}
+
+.premium-hero h1 {
+    font-family: 'Playfair Display', serif; /* Use a serif font for luxury */
+    font-size: 1rem;
+    color: #f3e5ab; /* Soft gold */
+    margin-bottom: 10px;
+}
+
+.hero-divider {
+    width: 200px;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, #c99169, transparent);
+    margin: 15px auto;
+}
+
+/* ACTION CARDS */
+.action-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+}
+
+.action-card {
+    position: relative;
+    height: 250px;
+    background: #1a1a1a;
+    border-radius: 15px;
+    overflow: hidden;
+    cursor: pointer;
+    border: 1px solid #333;
+    transition: all 0.4s ease;
+}
+
+.action-card:hover {
+    border-color: #c99169;
+    transform: translateY(-10px);
+    box-shadow: 0 10px 30px rgba(201, 145, 105, 0.15);
+}
+
+.card-content {
+    position: relative;
+    z-index: 2;
+    padding: 40px;
+}
+
+.card-content span {
+    font-size: 4rem;
+    font-weight: 900;
+    color: rgba(201, 145, 105, 0.1); /* Ghost number in background */
+    position: absolute;
+    top: 10px;
+    right: 20px;
+}
+
+.card-content h3 {
+    font-family: 'Playfair Display', serif;
+    color: #c99169;
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+}
+
+.card-content p {
+    color: #aaa;
+    line-height: 1.6;
+}
+
+/* DECORATIVE OVERLAY */
+.card-overlay {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(135deg, rgba(201, 145, 105, 0.05) 0%, transparent 100%);
+    z-index: 1;
+}
+
+/* START PAGE */
+.start-page {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center; /* removed duplicate background */
+}
+
+.start-page h1 {
+    font-size: 40px;
+    margin-bottom: 10px;
+}
+
+.start-page p {
+    margin-bottom: 20px;
+}
+
+/* START BUTTON (RESPONSIVE FIX) */
+.start-page button {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 8px;
+    background: linear-gradient(45deg, #c99169, #ffb347);
+    color: #101010;
+    font-size: 18px;
+    cursor: pointer;
+    transition: 0.3s;
+    width: 100%;
+    max-width: 300px;
+}
+
+.start-page button:hover {
+    transform: scale(1.05);
+}
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #2c3e50;
+    color: white;
+    padding: 1rem 2rem;
+}
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+.content-section {
+    margin-top: 20px;
+}
+.card {
+    background: white;
+    color: #333;
+    border-radius: 12px;
+    padding: 30px;
+    margin-top: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    position: relative; 
+    pointer-events: all;}
+/* MAIN CONTAINER */
+.container {
+    max-width: 400px;
+    width: 100%;
+    margin: auto;
+    padding: 20px;
+    position: relative; /* Essential for z-index */
+    z-index: 10;        /* Ensures container is above the background */
+}
+/* CARD */
+
+/* HEADINGS */
+h1, h2 {
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+/* INPUT */
+input {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    display: block;      /* Ensures they take up their own line */
+    font-family: inherit;
+    color: #333;
+    background-color: #fff;
+    cursor: text;        /* Forces the text cursor to appear */
+}
+
+/* GLOBAL BUTTON */
+button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 8px;
+    background: linear-gradient(45deg, #eab38c, #dbc474);
+    color: white;
+    font-size: 15px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    transform: scale(1.05);
+}
+
+/* LINKS */
+a {
+    color: #ff7a18;
+    text-decoration: none;
+}
+.table-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.table-item {
+    padding: 15px;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: 0.3s;
+    background: #f8f9fa;
+}
+
+.table-item:hover { transform: translateY(-5px); border-color: #c99169; }
+
+.table-item.booked {
+    background-color: #ffcccc;
+    border-color: #ff6666;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.table-item.available {
+    background-color: #e6fffa;
+    border-color: #38b2ac;
+}
+
+.table-item h4 { margin: 0; color: #333; }
+.table-item p { font-size: 12px; margin: 5px 0 0; color: #666; }
+/* LABEL */
+label {
+    display: block;
+    text-align: left;
+}
+
+/* MENU CARD */
+.menu-card {
+    background-image: url('https://images.template.net/516218/Aesthetic-Natural-Catering-Menu-Background-Template-edit-online.png');
+    background-size: cover;
+    background-position: center;
+    max-width: 650px;
+    margin: 30px auto;
+    border-radius: 15px;
+    padding: 20px;
+    min-height: 400px;   /* fixed */
+    height: auto;        /* fixed */
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+
+/* HEADER */
+.menu-card header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* FOOD IMAGES */
+.food-images {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    scroll-behavior: smooth; /* enhancement */
+}
+
+.food-images img {
+    width: 200px;
+    height: 130px;
+    border-radius: 10px;
+    object-fit: cover;
+}
+
+/* MENU CONTENT */
+.menu-content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+/* COLUMN */
+.column {
+    flex: 1;
+    min-width: 250px;
+}
+
+/* CATEGORY */
+.menu-category {
+    margin-bottom: 20px;
+}
+
+.category-header {
+    border-bottom: 2px solid orange;
+    margin-bottom: 10px;
+}
+
+/* MENU ITEM */
+.menu-item {
+    display: flex;
+    justify-content: space-between;
+    margin: 5px 0;
+}
+
+/* ITEM NAME */
+.item-name {
+    font-weight: 500;
+}
+
+/* PRICE */
+.item-price {
+    color: green;
+    font-weight: bold;
+}
+
+/* BILL OUTPUT */
+#bill_output {
+    background: white;
+    color: #333;
+    padding: 15px;
+    border-radius: 10px;
+    margin-top: 15px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+/* SUCCESS MESSAGE (FIXED SELECTOR) */
+.success-message {
+    color: rgb(208, 167, 227);
+    text-align: center;
+    margin-top: 30px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .menu-content {
+        flex-direction: column;
+    }
+
+    .food-images img {
+        width: 150px;
+        height: 100px;
+    }
+
+    .start-page h1 {
+        font-size: 28px;
+    }
+}
+/* RECEIPT CONTAINER */
+.receipt {
+    background-color: #fffef0; /* Classic receipt off-white */
+    color: #333;
+    padding: 25px;
+    border: 1px solid #eee;
+    border-top: 5px solid #c99169; /* Branding color at the top */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    max-width: 350px;
+    margin: 20px auto;
+    font-family: 'Courier New', Courier, monospace; /* Typography for receipt feel */
+    position: relative;
+}
+
+/* DASHED LINE SEPARATOR */
+.receipt hr {
+    border: none;
+    border-top: 1px dashed #bbb;
+    margin: 15px 0;
+}
+
+.receipt h3 {
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+}
+
+/* BILL DETAILS */
+.receipt-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+.receipt-total {
+    display: flex;
+    justify-content: space-between;
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 10px;
+    color: #000;
+}
+
+/* PAY BUTTON INSIDE RECEIPT */
+.pay-btn {
+    width: 100%;
+    background: #27ae60;
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background 0.3s;
+}
+
+.pay-btn:hover {
+    background: #219150;
+}
+.thank-you-card {
+    background: white;
+    padding: 40px;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.thank-you-card h2 { color: #27ae60; }
+.thank-you-card button { 
+    background: #c99169; 
+    width: auto; 
+    padding: 10px 30px; 
+}
+
+#order-list {
+    padding: 0;
+    list-style: none;
+}
+
+.order-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.remove-btn {
+    color: red;
+    background: none;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.total-bar {
+    margin: 15px 0;
+    font-size: 1.2rem;
+    color: #2c3e50;
+    text-align: right;
+}
+
+.add-btn { background-color: #27ae60; color: white; width: 100%; margin-top: 10px; }
+.next-btn { background-color: #2980b9; color: white; width: 100%; margin-top: 10px; }

@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard - Restaurant</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<nav class="navbar">
+    <div class="nav-logo">RestoManager</div>
+    <ul class="nav-links">
+        <li><a href="#" onclick="showSection('dash-home')">Dashboard</a></li>
+        <li><a href="#" onclick="showSection('cust-section')">Customers</a></li>
+        <li><a href="#" onclick="showSection('table-section')">Tables</a></li>
+        <li><a href="#" onclick="showSection('menu-section')">Menu</a></li>
+        <li><a href="#" onclick="showSection('bill-section')">Billing</a></li>
+    </ul>
+    <div class="nav-right">
+        <span id="nav-user"></span>
+        <button class="logout-btn" onclick="logout()">Logout</button>
+    </div>
+</nav>
+
+<div class="container">
+
+    <div id="dash-home" class="content-section">
+    <div class="premium-hero">
+        <h1 id="welcome">Welcome, Artisan</h1>
+        <div class="hero-divider"></div>
+        <p>The floor is yours. Manage your tables and orders with precision.</p>
+    </div>
+
+    <div class="action-grid">
+        <div class="action-card" onclick="showSection('customer-section')">
+            <div class="card-overlay"></div>
+            <div class="card-content">
+                <span>01</span>
+                <h3>New Service</h3>
+                <p>Register a guest and begin a new dining experience.</p>
+            </div>
+        </div>
+
+        <div class="action-card" onclick="showSection('table-section')">
+            <div class="card-overlay"></div>
+            <div class="card-content">
+                <span>02</span>
+                <h3>Table Map</h3>
+                <p>Check availability and manage floor seating.</p>
+            </div>
+        </div>
+
+        <div class="action-card" onclick="showSection('menu-section')">
+            <div class="card-overlay"></div>
+            <div class="card-content">
+                <span>03</span>
+                <h3>Cuisine</h3>
+                <p>Browse the catalog and manage orders.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div id="cust-section" class="content-section" style="display:none;">
+        <div class="card">
+            <h2>Add Customer</h2>
+            <input type="text" id="cust_name" placeholder="Customer Name">
+            <input type="text" id="cust_phone" placeholder="Phone Number">
+            <button onclick="addcustomer()">Add Customer</button>
+        </div>
+    </div>
+
+   <div id="table-section" class="content-section" style="display:none;">
+    <div class="card">
+        <h2>Step 2: Assign Table</h2>
+        <p>Select an available table to proceed.</p>
+        <div id="table-grid" class="table-grid"></div>
+    </div>
+</div>
+    <div id="menu-section" class="content-section" style="display:none;">
+    <div class="card">
+        <div class="menu-card">
+    <header>
+        <h1>Maria's Restaurant</h1>
+        <p>A Taste of Tradition</p>
+    </header>
+
+    <div class="food-images">
+        <img src="https://www.cookwithmanali.com/wp-content/uploads/2019/05/Paneer-Butter-Masala.jpg" alt="Paneer Butter Masala">
+        <img src="https://masalaandchai.com/wp-content/uploads/2021/10/Restaurant-Style-Chicken-65.jpg" alt="Chicken 65">
+        <img src="https://www.secondrecipe.com/wp-content/uploads/2020/06/veg-manchow-soup.jpg" alt="Manchow Soup">
+    </div>
+
+    <div class="menu-content">
+        <div class="column">
+            
+            <div class="menu-category">
+                <div class="category-header"><h2>Soups</h2></div>
+                <div class="menu-item">
+                    <div class="item-info"><span class="item-name">1.Veg Manchow soup</span><span class="item-dots"></span></div>
+                    <span class="item-price">₹139.00</span>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info"><span class="item-name">2.Veg Hot And Sour</span><span class="item-dots"></span></div>
+                    <span class="item-price">₹139.00</span>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info"><span class="item-name">3.Chi. Manchow Soup</span><span class="item-dots"></span></div>
+                    <span class="item-price">₹159.00</span>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info"><span class="item-name">4.Chi. Noodles Soup</span><span class="item-dots"></span></div>
+                    <span class="item-price">₹159.00</span>
+                </div>
+            </div>
+
+            <div class="menu-category">
+                <div class="category-header"><h2>Starters</h2></div>
+                <div class="menu-item">
+                    <div class="item-info"><span class="item-name">5.Veg Manchurian Dry</span><span class="item-dots"></span></div>
+                    <span class="item-price">₹219.00</span>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info"><span class="item-name">6.Veg Crispy</span><span class="item-dots"></span></div>
+                    <span class="item-price">₹249.00</span>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info"><span class="item-name">7.Paneer Sezhwan</span><span class="item-dots"></span></div>
+                    <span class="item-price">₹299.00</span>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info"><span class="item-name">8.Chi. Lollipop</span><span class="item-dots"></span></div>
+                    <span class="item-price">₹289.00</span>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info"><span class="item-name">9.Chicken-65</span><span class="item-dots"></span></div>
+                    <span class="item-price">₹319.00</span>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="column">
+
+            <div class="menu-category">
+                <div class="category-header"><h2>Tandoor</h2></div>
+                <div class="menu-item">
+                    <div class="item-info"><span class="item-name">10.Veg Seek Kabab</span><span class="item-dots"></span></div>
+                    <span class="item-price">₹279.00</span>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info"><span class="item-name">11.Veg Platter (Tandoor)</span><span class="item-dots"></span></div>
+                    <span class="item-price">₹699.00</span>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info"><span class="item-name">12.Chi. Pahadi Kabab</span><span class="item-dots"></span></div>
+                    <span class="item-price">₹389.00</span>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info"><span class="item-name">13.Chicken Platter (24 Pcs)</span><span class="item-dots"></span></div>
+                    <span class="item-price">₹1099.00</span>
+                </div>
+            </div>
+
+            <div class="menu-category">
+                <div class="category-header"><h2>Main Course</h2></div>
+                <div class="menu-item">
+                    <div class="item-info"><span class="item-name">14.Veg Kolhapuri</span><span class="item-dots"></span></div>
+                    <span class="item-price">₹249.00</span>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info"><span class="item-name">15.Paneer Butter Masala</span><span class="item-dots"></span></div>
+                    <span class="item-price">₹299.00</span>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info"><span class="item-name">16.Malai Kofta</span><span class="item-dots"></span></div>
+                    <span class="item-price">₹319.00</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        <p>Prices are inclusive of all taxes. | © Maria's Restaurant 2024</p>
+    </footer>
+</div>
+
+        <h2>Menu & Order</h2>
+        <div class="search-box">
+            <input type="number" id="item_id" placeholder="Enter Item ID" onkeyup="fetchItem()">
+        </div>
+        
+        <div class="item-preview">
+            <p><strong>Item:</strong> <span id="display_name">-</span></p>
+            <p><strong>Price:</strong> ₹<span id="display_price">0</span></p>
+            <input type="hidden" id="item_name">
+            <input type="hidden" id="price">
+            
+            <button onclick="addToOrder()" class="add-btn">Add to Order</button>
+        </div>
+
+        <div class="order-summary">
+            <h3>Current Order Items</h3>
+            <ul id="order-list">
+                </ul>
+            <div class="total-bar">
+                <strong>Total Amount: ₹<span id="order-total">0</span></strong>
+            </div>
+            <button onclick="showSection('bill-section')" class="next-btn">Proceed to Billing</button>
+        </div>
+    </div>
+</div>
+
+   <div id="bill-section" class="content-section" style="display:none;">
+    <div class="card">
+        <h2>Billing & Payment</h2>
+        <input id="bill_customer" placeholder="Confirm Customer Name">
+        <button onclick="generateBill()" class="action-btn">Generate Bill</button>
+        
+        <div id="bill_output" style="margin-top: 20px;"></div>
+    </div>
+</div>
+
+
+
+<script src="script.js"></script>
+
+
+
+</body>
+</html>
