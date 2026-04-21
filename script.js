@@ -1,6 +1,6 @@
 /* ---------------- CONFIG & GLOBALS ---------------- */
 const API = "http://127.0.0.1:5000";
-
+let currentOrder = [];
 
 // Handle Landing Page vs Dashboard Logic
 document.addEventListener("DOMContentLoaded", () => {
@@ -177,7 +177,7 @@ async function addTable() {
         }
     } catch (err) { alert("Server error"); }
 }
-let currentOrder = []; // Stores selected menu items
+
 let selectedTableId = null; 
 let selectedCustomerId = null; // Set this when addcustomer() succeeds
 
