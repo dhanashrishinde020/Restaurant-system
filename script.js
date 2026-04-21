@@ -349,7 +349,7 @@ async function bookTable(tableId) {
        if (response.ok) {
         localStorage.setItem('selectedTableId', tableId); // Save Table ID
         localStorage.setItem('selectedCustomerId', 1);   // For now, hardcode or get from login
-        window.location.href = "menu.html";              // Go to menu
+       showSection('menu-section');           
         
         }
     }
