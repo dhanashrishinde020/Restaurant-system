@@ -63,32 +63,27 @@ def login():
 
 # --- CUSTOMER & TABLES ---
 
-@app.route("/api/customer/add", methods=["POST"])
-def add_customer():
-    db = None
-    try:
-        data = request.get_json(force=True)
-        phone = data.get('phone')
+let selectedCustomerId = null; 
+let currentCart = []; // Store items here
 
-        # Python-side validation for 10 digits
-        if not phone or len(str(phone)) != 10 or not str(phone).isdigit():
-            return jsonify({"message": "Phone number must be exactly 10 digits"}), 400
+// When adding a customer, capture the ID from Flask
+async function addcustomer() {
+    const name = document.getElementById('cust_name').value;
+    const phone = document.getElementById('cust_phone').value;
 
-        db = get_db()
-        cursor = db.cursor()
-        
-        query = "INSERT INTO Customer (Name, Phone_No) VALUES (%s, %s)"
-        cursor.execute(query, (data['name'], phone))
-        db.commit()
-        
-        return jsonify({"message": "Customer added", "id": cursor.lastrowid}), 200
-
-    except mysql.connector.Error as err:
-        if err.errno == 1062: # MySQL error code for Duplicate Entry
-            return jsonify({"message": "This phone number is already registered!"}), 400
-        return jsonify({"message": str(err)}), 500
-    finally:
-        if db: db.close()
+    const res = await fetch('http://localhost:5000/api/customer/add', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ name, phone })
+    });
+    
+    const data = await res.json();
+    if (res.ok) {
+        selectedCustomerId = data.id; // CRITICAL: Save this ID
+        alert("Customer ID saved: " + selectedCustomerId);
+        showSection('table-section');
+    }
+}
 
 @app.route("/api/table/add", methods=["POST"])
 def add_table():
