@@ -1,6 +1,6 @@
 /* ---------------- CONFIG & GLOBALS ---------------- */
 const API = "http://127.0.0.1:5000";
-let currentOrder = [];
+
 
 // Handle Landing Page vs Dashboard Logic
 document.addEventListener("DOMContentLoaded", () => {
@@ -177,28 +177,74 @@ async function addTable() {
         }
     } catch (err) { alert("Server error"); }
 }
-async function assignTable() {
-    const tableId = document.getElementById("table_id_input").value;
-    if (!tableId) return alert("Please enter a Table ID");
+let currentOrder = []; // Stores selected menu items
+let selectedTableId = null; 
+let selectedCustomerId = null; // Set this when addcustomer() succeeds
 
-    try {
-        const res = await fetch(`${API}/api/table/assign`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ table_id: tableId })
-        });
+// --- 1. TABLE SELECTION ---
+async function assignTable(tableId) {
+    // Call your API to mark table as 'Booked'
+    const res = await fetch('http://localhost:5000/api/table/assign', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ table_id: tableId })
+    });
 
+    if (res.ok) {
+        selectedTableId = tableId; // SAVE FOR LATER
+        alert(`Table ${tableId} assigned!`);
+        showSection('menu-section'); // Move to Menu automatically
+    }
+}
+
+// --- 2. ADDING ITEMS TO LIST ---
+function addToOrder() {
+    const id = document.getElementById('item_id').value;
+    const name = document.getElementById('display_name').innerText;
+    const price = parseFloat(document.getElementById('display_price').innerText);
+
+    if (name === "-") return alert("Fetch an item first!");
+
+    currentOrder.push({ item_id: id, name: name, price: price, qty: 1 });
+    updateOrderUI();
+}
+
+function updateOrderUI() {
+    const list = document.getElementById('order-list');
+    let total = 0;
+    list.innerHTML = "";
+    
+    currentOrder.forEach(item => {
+        list.innerHTML += `<li>${item.name} - ₹${item.price}</li>`;
+        total += item.price;
+    });
+    document.getElementById('order-total').innerText = total;
+}
+
+// --- 3. THE MISSING STEP: SAVE TO MYSQL ---
+async function finalizeOrder() {
+    if (!selectedTableId || currentOrder.length === 0) {
+        alert("Missing table or items!");
+        return;
+    }
+
+    const orderData = {
+        customer_id: selectedCustomerId || 1, // Default to 1 if not set
+        table_id: selectedTableId,
+        items: currentOrder
+    };
+
+    const res = await fetch('http://localhost:5000/api/order/create', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(orderData)
+    });
+
+    if (res.ok) {
         const data = await res.json();
-
-        if (res.ok) {
-            alert("Table " + tableId + " assigned!");
-            showSection('menu-section');
-        } else {
-            // This will show "This table is already booked!" if the backend returns 400
-            alert(data.message); 
-        }
-    } catch (err) {
-        alert("Server error. Make sure Flask is running.");
+        localStorage.setItem('lastOrderId', data.order_id); // Save for Billing
+        alert("Order saved to Database!");
+        showSection('bill-section');
     }
 }
 // Add this to your showSection logic
