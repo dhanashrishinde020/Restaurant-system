@@ -300,9 +300,11 @@ async function bookTable(tableId) {
             body: JSON.stringify({ table_id: tableId })
         });
 
-        if (response.ok) {
-            alert("Table booked successfully!");
-            loadTables(); // Refresh the grid
+       if (response.ok) {
+        localStorage.setItem('selectedTableId', tableId); // Save Table ID
+        localStorage.setItem('selectedCustomerId', 1);   // For now, hardcode or get from login
+        window.location.href = "menu.html";              // Go to menu
+        
         }
     }
 }
@@ -429,6 +431,26 @@ async function generateBill() {
     } catch (err) { console.error("Could not save bill to database"); }
 }
 
+async function placeOrder() {
+    const orderData = {
+        customer_id: localStorage.getItem('selectedCustomerId'),
+        table_id: localStorage.getItem('selectedTableId'),
+        items: [
+            { item_id: 1, qty: 2 }, // This should come from your "Cart"
+            { item_id: 5, qty: 1 }
+        ]
+    };
+
+    const response = await fetch('http://localhost:5000/api/order/create', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(orderData)
+    });
+
+    if (response.ok) {
+        alert("Order saved to Database!");
+    }
+}
 function processPayment() {
     document.getElementById("bill_output").innerHTML = `
         <div class="thank-you-card">
