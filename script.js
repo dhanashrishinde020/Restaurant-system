@@ -399,40 +399,63 @@ async function fetchItem() {
     } catch (err) { console.error("Fetch error:", err); }
 }
 
-function addToOrder() {
-    const name = document.getElementById("item_name").value;
-    const price = parseFloat(document.getElementById("price").value);
 
-    if (!name || isNaN(price)) return alert("Search for an item first!");
+let cartItems = []; // To store the menu items selected
 
-    currentOrder.push({ name, price });
-    updateOrderList();
-}
+// Step 1: Capture Customer ID
+async function addcustomer() {
+    const name = document.getElementById('cust_name').value;
+    const phone = document.getElementById('cust_phone').value;
 
-function updateOrderList() {
-    const list = document.getElementById("order-list");
-    const totalDisplay = document.getElementById("order-total");
-    list.innerHTML = "";
-    let grandTotal = 0;
-
-    currentOrder.forEach((item, index) => {
-        const li = document.createElement("li");
-        li.className = "order-item";
-        li.innerHTML = `
-            <span>${item.name}</span>
-            <span>₹${item.price.toFixed(2)} 
-                <button onclick="removeItem(${index})" class="remove-btn">×</button>
-            </span>
-        `;
-        list.appendChild(li);
-        grandTotal += item.price;
+    const res = await fetch('http://localhost:5000/api/customer/add', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ name, phone })
     });
-    totalDisplay.innerText = grandTotal.toFixed(2);
+    const data = await res.json();
+    if (res.ok) {
+        selectedCustomerId = data.id; // STORE THE ID RETURNED BY MYSQL
+        alert("Customer Registered! Proceed to Table Map.");
+        showSection('table-section');
+    }
 }
 
-function removeItem(index) {
-    currentOrder.splice(index, 1);
-    updateOrderList();
+// Step 2: Capture Table ID
+async function assignTable(tableId) {
+    const res = await fetch('http://localhost:5000/api/table/assign', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ table_id: tableId })
+    });
+
+    if (res.ok) {
+        selectedTableId = tableId; // STORE THE TABLE ID
+        showSection('menu-section'); // MOVE TO MENU
+    }
+}
+
+// Step 3: THE MISSING PIECE (Save to Orders Table)
+async function finalizeOrder() {
+    if (!selectedTableId || !selectedCustomerId) {
+        return alert("Please register customer and select a table first!");
+    }
+
+    const orderData = {
+        customer_id: selectedCustomerId,
+        table_id: selectedTableId,
+        items: cartItems // This array should contain {item_id, qty}
+    };
+
+    const res = await fetch('http://localhost:5000/api/order/create', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(orderData)
+    });
+
+    if (res.ok) {
+        alert("Order successfully saved to Database!");
+        showSection('bill-section');
+    }
 }
 
 /* ---------------- BILLING ---------------- */
