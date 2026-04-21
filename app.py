@@ -157,49 +157,33 @@ def get_all_tables():
     try:
         db = get_db()
         cursor = db.cursor(dictionary=True)
+
         cursor.execute("SELECT * FROM Restaurant_Table")
         tables = cursor.fetchall()
+
         return jsonify(tables), 200
-    finally:
-        if db: db.close()
-# --- MENU & BILLING ---
 
-@app.route("/api/menu/<int:item_id>", methods=["GET"])
-def get_menu_item(item_id):
-    db = None
-    try:
-        db = get_db()
-        cursor = db.cursor(dictionary=True)
-        cursor.execute("SELECT * FROM Menu WHERE Item_ID = %s", (item_id,))
-        item = cursor.fetchone()
-        return jsonify(item) if item else (jsonify({"message": "Not found"}), 404)
-    finally:
-        if db: db.close()
-
-
-@app.route("/api/bill/generate", methods=["POST"])
-def generate_bill():
-    db = None
-    try:
-        data = request.get_json(force=True)
-        db = get_db()
-        cursor = db.cursor()
-        
-        # Now we can save the name and total!
-        query = """INSERT INTO bill (Customer_Name, Total_Amount, Payment_Mode, Bill_Date) 
-                   VALUES (%s, %s, %s, CURDATE())"""
-        
-        # Ensure your frontend is sending 'customer' and 'total'
-        values = (data.get('customer'), data.get('total'), "Cash")
-        
-        cursor.execute(query, values)
-        db.commit()
-        return jsonify({"message": "Bill Created Successfully"}), 201
     except Exception as e:
-        print(f"Error: {e}")
+        print("Error:", str(e))  # DEBUG
         return jsonify({"error": str(e)}), 500
+
     finally:
-        if db: db.close()
+        if db:
+            db.close()
+@app.route('/submit-order', methods=['POST'])
+def submit_order():
+    # Get the JSON data sent from JavaScript
+    data = request.json
+    
+    if not data:
+        return jsonify({"error": "No data provided"}), 400
+
+    # Logic to "Add to Order" on the server side
+    database_orders.append(data)
+    
+    print(f"Order Received: {data['name']} for ${data['price']}")
+    
+    return jsonify({"message": "Order synced successfully", "total_items": len(database_orders)}), 200
 @app.route("/api/order/create", methods=["POST"])
 def create_order():
     db = None
@@ -281,5 +265,26 @@ def add_order():
         if db:
             cursor.close()
             db.close()
+
+# Improved Python Fetch Logic
+
+@app.route('/api/menu/<int:item_id>', methods=['GET'])
+def get_single_item(item_id):
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    
+    try:
+        # Query specific ID from your menu table
+        cursor.execute("SELECT Item_Name, Price FROM menu WHERE Item_ID = %s", (item_id,))
+        item = cursor.fetchone()
+        
+        if item:
+            return jsonify(item), 200
+        else:
+            return jsonify({"message": "Item not found"}), 404
+    finally:
+        cursor.close()
+        conn.close()
+
 if __name__ == "__main__":
     app.run(debug=True, port=5000)

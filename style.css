@@ -4,7 +4,68 @@
     padding: 0;
     box-sizing: border-box;
 }
+/* ---------- TABLE GRID ---------- */
+#table-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
 
+/* ---------- TABLE CARD ---------- */
+.table-card {
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+    font-family: Arial, sans-serif;
+}
+
+/* Hover effect */
+.table-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 14px rgba(0,0,0,0.15);
+}
+
+/* ---------- STATUS COLORS ---------- */
+.table-card.available {
+    background-color: #d4edda;
+    border: 2px solid #28a745;
+    color: #155724;
+}
+
+.table-card.booked {
+    background-color: #f8d7da;
+    border: 2px solid #dc3545;
+    color: #721c24;
+    cursor: not-allowed;
+}
+
+/* ---------- TEXT ---------- */
+.table-id {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.capacity {
+    font-size: 0.9rem;
+    margin-top: 5px;
+}
+
+/* ---------- SELECTED TABLE ---------- */
+.table-card.selected {
+    border: 3px solid #007bff;
+    background-color: #cce5ff;
+}
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width: 600px) {
+    #table-grid {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    }
+}
 /* BODY */
 body {
     font-family: 'Poppins', sans-serif;
