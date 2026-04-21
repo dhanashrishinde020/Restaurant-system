@@ -187,19 +187,30 @@
     </footer>
 </div>
 
-        <h2>Menu & Order</h2>
-        <div class="search-box">
-            <input type="number" id="item_id" placeholder="Enter Item ID" onkeyup="fetchItem()">
-        </div>
-        
-        <div class="item-preview">
-            <p><strong>Item:</strong> <span id="display_name">-</span></p>
-            <p><strong>Price:</strong> ₹<span id="display_price">0</span></p>
-            <input type="hidden" id="item_name">
-            <input type="hidden" id="price">
-            
-            <button onclick="addToOrder()" class="add-btn">Add to Order</button>
-        </div>
+       <!-- INPUT -->
+<input type="number" id="item_id" placeholder="Enter Item ID">
+
+<!-- DISPLAY -->
+<p>Item: <span id="display_name"></span></p>
+<p>Price: ₹<span id="display_price"></span></p>
+
+<!-- HIDDEN STORAGE -->
+<input type="hidden" id="item_id_hidden">
+
+<!-- REQUIRED FOR JS -->
+<input type="hidden" id="item_name">
+<input type="hidden" id="price">
+
+<!-- BUTTONS -->
+<button onclick="fetchItem()">Search</button>
+<button onclick="addToOrder()">Add to Order</button>
+
+<!-- ORDER LIST -->
+<ul id="order-list"></ul>
+<h3>Total: ₹<span id="order-total">0</span></h3>
+
+<!-- FIX THIS -->
+<button onclick="placeOrder()">Confirm Order & Save</button>
 
         <div class="order-summary">
             <h3>Current Order Items</h3>
