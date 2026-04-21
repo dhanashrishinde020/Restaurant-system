@@ -63,41 +63,29 @@ def login():
 
 # --- CUSTOMER & TABLES ---
 
-let selectedCustomerId = null; 
-let currentCart = []; // Store items here
-
-// When adding a customer, capture the ID from Flask
-async function addcustomer() {
-    const name = document.getElementById('cust_name').value;
-    const phone = document.getElementById('cust_phone').value;
-
-    const res = await fetch('http://localhost:5000/api/customer/add', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({ name, phone })
-    });
-    
-    const data = await res.json();
-    if (res.ok) {
-        selectedCustomerId = data.id; // CRITICAL: Save this ID
-        alert("Customer ID saved: " + selectedCustomerId);
-        showSection('table-section');
-    }
-}
-
-@app.route("/api/table/add", methods=["POST"])
-def add_table():
-    db = None
+@app.route("/api/order/create", methods=["POST"])
+def create_order():
+    db = get_db()
+    cursor = db.cursor()
+    data = request.get_json()
     try:
-        db = get_db()
-        cursor = db.cursor()
-        data = request.get_json(force=True)
-        query = "INSERT INTO Restaurant_Table (Capacity, Status) VALUES (%s, %s)"
-        cursor.execute(query, (data['capacity'], 'Available'))
+        # 1. Insert into Orders (Matches your SQL lowercase customer_id)
+        cursor.execute("INSERT INTO Orders (customer_id, Table_ID, Order_Date, Order_Time) VALUES (%s, %s, CURDATE(), CURTIME())", 
+                       (data['customer_id'], data['table_id']))
+        order_id = cursor.lastrowid
+
+        # 2. Insert into Order_Detail
+        for item in data['items']:
+            cursor.execute("INSERT INTO Order_Detail (Order_ID, Item_ID, Quantity) VALUES (%s, %s, %s)", 
+                           (order_id, item['item_id'], item['qty']))
+        
         db.commit()
-        return jsonify({"message": "Table assigned"}), 200
+        return jsonify({"message": "Order Saved"}), 201
+    except Exception as e:
+        db.rollback()
+        return jsonify({"error": str(e)}), 500
     finally:
-        if db: db.close()
+        db.close()
 @app.route("/api/table/assign", methods=["POST"])
 def assign_table():
     db = None
