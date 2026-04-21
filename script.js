@@ -20,6 +20,34 @@ document.addEventListener("DOMContentLoaded", () => {
         updateUI();
     }
 });
+async function addCustomer() {
+    const name = document.getElementById("name").value;
+    const phone = document.getElementById("phone").value;
+
+    const res = await fetch("http://127.0.0.1:5000/api/auth/register", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+            name: name,
+            email: phone + "@temp.com",  // since your backend needs email
+            password: "1234"
+        })
+    });
+
+    const data = await res.json();
+
+    if (res.ok) {
+        alert("Customer added!");
+
+        // ✅ STORE customer_id
+        localStorage.setItem("customer_id", data.customer_id);
+
+        // Optional: redirect
+        window.location.href = "tables.html";
+    } else {
+        alert(data.message);
+    }
+}
 async function updateDashboardStats() {
     try {
         const res = await fetch(`${API}/api/tables/getall`);
