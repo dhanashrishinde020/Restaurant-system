@@ -537,3 +537,14 @@ function processPayment() {
     `;
     currentOrder = [];
 }
+function addToOrder() {
+    const customerId = localStorage.getItem("customer_id");
+    const tableId = localStorage.getItem("table_id");
+
+    if (!customerId || !tableId) {
+        alert("Please register customer and select a table first!");
+        return;
+    }
+
+    // continue adding item
+}
