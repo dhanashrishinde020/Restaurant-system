@@ -63,29 +63,6 @@ def login():
 
 # --- CUSTOMER & TABLES ---
 
-@app.route("/api/order/create", methods=["POST"])
-def create_order():
-    db = get_db()
-    cursor = db.cursor()
-    data = request.get_json()
-    try:
-        # 1. Insert into Orders (Matches your SQL lowercase customer_id)
-        cursor.execute("INSERT INTO Orders (customer_id, Table_ID, Order_Date, Order_Time) VALUES (%s, %s, CURDATE(), CURTIME())", 
-                       (data['customer_id'], data['table_id']))
-        order_id = cursor.lastrowid
-
-        # 2. Insert into Order_Detail
-        for item in data['items']:
-            cursor.execute("INSERT INTO Order_Detail (Order_ID, Item_ID, Quantity) VALUES (%s, %s, %s)", 
-                           (order_id, item['item_id'], item['qty']))
-        
-        db.commit()
-        return jsonify({"message": "Order Saved"}), 201
-    except Exception as e:
-        db.rollback()
-        return jsonify({"error": str(e)}), 500
-    finally:
-        db.close()
 @app.route("/api/table/assign", methods=["POST"])
 def assign_table():
     db = None
