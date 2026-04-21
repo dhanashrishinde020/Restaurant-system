@@ -354,7 +354,14 @@ async function bookTable(tableId) {
         }
     }
 }
-
+function showSection(sectionId) {
+    // Hide all sections
+    document.querySelectorAll('.content-section').forEach(section => {
+        section.style.display = 'none';
+    });
+    // Show the requested one
+    document.getElementById(sectionId).style.display = 'block';
+}
 // Initial load
 loadTables();
 
