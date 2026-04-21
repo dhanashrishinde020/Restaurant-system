@@ -186,20 +186,23 @@ def create_order():
     db = None
     try:
         data = request.get_json(force=True)
-        # Expected JSON: { "customer_id": 1, "table_id": 2, "items": [{"item_id": 10, "qty": 2}] }
-        
         db = get_db()
         cursor = db.cursor()
 
-        # 1. Insert into 'Orders' table (Note: Changed from 'order' to 'Orders' to match your SQL)
-        order_query = "INSERT INTO Orders (Customer_ID, Table_ID, Order_Date) VALUES (%s, %s, CURDATE())"
+        # 1. Matches your SQL: customer_id (lowercase) and added CURTIME()
+        order_query = """
+            INSERT INTO Orders (customer_id, Table_ID, Order_Date, Order_Time) 
+            VALUES (%s, %s, CURDATE(), CURTIME())
+        """
         cursor.execute(order_query, (data['customer_id'], data['table_id']))
         
-        # 2. Get the Order_ID that was just created
         new_order_id = cursor.lastrowid
 
-        # 3. Insert items into 'Order_Detail'
-        detail_query = "INSERT INTO Order_Detail (Order_ID, Item_ID, Quantity) VALUES (%s, %s, %s)"
+        # 2. Matches your SQL: Order_ID, Item_ID, Quantity
+        detail_query = """
+            INSERT INTO Order_Detail (Order_ID, Item_ID, Quantity) 
+            VALUES (%s, %s, %s)
+        """
         
         for item in data['items']:
             cursor.execute(detail_query, (new_order_id, item['item_id'], item.get('qty', 1)))
@@ -208,11 +211,10 @@ def create_order():
         return jsonify({"message": "Order placed!", "order_id": new_order_id}), 201
 
     except Exception as e:
-        if db: 
-            db.rollback() # Important: rolls back changes if the loop fails
+        if db: db.rollback()
+        print(f"Error: {str(e)}") # This will show the error in your VS Code Terminal
         return jsonify({"message": str(e)}), 500
     finally:
-        if db: 
-            db.close()
+        if db: db.close()
 if __name__ == "__main__":
     app.run(debug=True, port=5000)
