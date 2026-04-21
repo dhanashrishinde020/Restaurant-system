@@ -258,33 +258,57 @@ async function register() {
     }
 }
 
+// script.js
 async function loadTables() {
     try {
-        const res = await fetch(`${API}/api/tables/getall`);
-        const tables = await res.json();
-        const grid = document.getElementById("table-grid");
-        grid.innerHTML = "";
+        const response = await fetch('http://localhost:5000/api/tables/getall');
+        const tables = await response.json();
+        const grid = document.getElementById('table-grid');
+        
+        grid.innerHTML = ''; // Clear current view
 
         tables.forEach(table => {
-            const div = document.createElement("div");
-            div.className = `table-item ${table.Status.toLowerCase()}`;
-            div.innerHTML = `
-                <h4>Table ${table.Table_ID}</h4>
-                <p>Capacity: ${table.Capacity}</p>
-                <strong>${table.Status}</strong>
-            `;
+            const card = document.createElement('div');
+            // Check status from your MySQL data
+            const isAvailable = table.Status === 'Available';
             
-            div.onclick = () => {
-                if (table.Status === 'Booked') {
-                    alert("This table is already booked!");
-                } else {
-                    assignSpecificTable(table.Table_ID);
-                }
-            };
-            grid.appendChild(div);
+            card.className = `table-card ${isAvailable ? 'available' : 'booked'}`;
+            
+            card.innerHTML = `
+                <div class="table-id">Table ${table.Table_ID}</div>
+                <div class="capacity">Seats: ${table.Capacity}</div>
+                <div class="status"><strong>${table.Status}</strong></div>
+            `;
+
+            // If available, allow clicking to book
+            if (isAvailable) {
+                card.onclick = () => bookTable(table.Table_ID);
+            }
+
+            grid.appendChild(card);
         });
-    } catch (err) { console.error("Error loading tables:", err); }
+    } catch (error) {
+        console.error("Error loading tables:", error);
+    }
 }
+
+async function bookTable(tableId) {
+    if (confirm(`Do you want to book Table ${tableId}?`)) {
+        const response = await fetch('http://localhost:5000/api/table/assign', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ table_id: tableId })
+        });
+
+        if (response.ok) {
+            alert("Table booked successfully!");
+            loadTables(); // Refresh the grid
+        }
+    }
+}
+
+// Initial load
+loadTables();
 
 async function assignSpecificTable(tableId) {
     try {

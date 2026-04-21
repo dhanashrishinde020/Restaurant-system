@@ -222,44 +222,32 @@ a {
     color: #ff7a18;
     text-decoration: none;
 }
-.table-grid {
+
+.grid-container {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-    gap: 15px;
-    margin-top: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 20px;
+    padding: 20px;
 }
 
-.table-item {
-    padding: 15px;
-    border: 2px solid #ddd;
-    border-radius: 10px;
+.table-card {
+    border-radius: 12px;
+    padding: 20px;
     text-align: center;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: transform 0.2s;
     cursor: pointer;
-    transition: 0.3s;
-    background: #f8f9fa;
 }
 
-.table-item:hover { transform: translateY(-5px); border-color: #c99169; }
+.table-card:hover { transform: scale(1.05); }
 
-.table-item.booked {
-    background-color: #ffcccc;
-    border-color: #ff6666;
-    cursor: not-allowed;
-    opacity: 0.7;
-}
+/* Status Colors */
+.available { background-color: #d4edda; border: 2px solid #28a745; color: #155724; }
+.booked { background-color: #f8d7da; border: 2px solid #dc3545; color: #721c24; cursor: not-allowed; }
 
-.table-item.available {
-    background-color: #e6fffa;
-    border-color: #38b2ac;
-}
+.table-id { font-size: 1.2rem; font-weight: bold; }
+.capacity { font-size: 0.9rem; margin-top: 5px; }
 
-.table-item h4 { margin: 0; color: #333; }
-.table-item p { font-size: 12px; margin: 5px 0 0; color: #666; }
-/* LABEL */
-label {
-    display: block;
-    text-align: left;
-}
 
 /* MENU CARD */
 .menu-card {
