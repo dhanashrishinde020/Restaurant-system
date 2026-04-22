@@ -1,9 +1,13 @@
+Here is your complete CSS code, formatted and ready for a direct copy-paste into your project.
+
+```css
 /* RESET */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
+
 /* ---------- TABLE GRID ---------- */
 #table-grid {
     display: grid;
@@ -66,6 +70,7 @@
         grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
     }
 }
+
 /* BODY */
 body {
     font-family: 'Poppins', sans-serif;
@@ -79,6 +84,7 @@ body {
     display: flex;
     flex-direction: column;
 }
+
 /* DASHBOARD HERO */
 .premium-hero {
     text-align: center;
@@ -95,6 +101,29 @@ body {
     font-size: 1rem;
     color: #f3e5ab; /* Soft gold */
     margin-bottom: 10px;
+}
+
+.overlay-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: white;
+}
+
+.overlay-content h1 {
+    font-size: 42px;
+    font-weight: bold;
+    background: linear-gradient(45deg, #5bda83, #a2e373);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.overlay-content p {
+    font-size: 18px;
+    margin-top: 10px;
+    opacity: 0.9;
 }
 
 .hero-divider {
@@ -170,11 +199,13 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    text-align: center; /* removed duplicate background */
+    text-align: center;
 }
+
 .content-section {
     display: none; /* Hidden by default */
 }
+
 #bill_output {
     max-width: 400px;
     margin: 20px auto;
@@ -183,6 +214,7 @@ body {
     background-color: #fff;
     font-family: 'Courier New', Courier, monospace;
 }
+
 .start-page h1 {
     font-size: 40px;
     margin-bottom: 10px;
@@ -209,6 +241,7 @@ body {
 .start-page button:hover {
     transform: scale(1.05);
 }
+
 .navbar {
     display: flex;
     justify-content: space-between;
@@ -217,19 +250,23 @@ body {
     color: white;
     padding: 1rem 2rem;
 }
+
 .nav-links {
     list-style: none;
     display: flex;
     gap: 20px;
 }
+
 .nav-links a {
     color: white;
     text-decoration: none;
     font-weight: bold;
 }
+
 .content-section {
     margin-top: 20px;
 }
+
 .card {
     background: white;
     color: #333;
@@ -238,7 +275,9 @@ body {
     margin-top: 20px;
     box-shadow: 0 10px 25px rgba(0,0,0,0.3);
     position: relative; 
-    pointer-events: all;}
+    pointer-events: all;
+}
+
 /* MAIN CONTAINER */
 .container {
     max-width: 400px;
@@ -248,7 +287,6 @@ body {
     position: relative; /* Essential for z-index */
     z-index: 10;        /* Ensures container is above the background */
 }
-/* CARD */
 
 /* HEADINGS */
 h1, h2 {
@@ -290,7 +328,7 @@ button:hover {
 
 /* LINKS */
 a {
-    color: #ff7a18;
+    color: #3de63a;
     text-decoration: none;
 }
 
@@ -319,7 +357,6 @@ a {
 .table-id { font-size: 1.2rem; font-weight: bold; }
 .capacity { font-size: 0.9rem; margin-top: 5px; }
 
-
 /* MENU CARD */
 .menu-card {
     background-image: url('https://images.template.net/516218/Aesthetic-Natural-Catering-Menu-Background-Template-edit-online.png');
@@ -329,8 +366,8 @@ a {
     margin: 30px auto;
     border-radius: 15px;
     padding: 20px;
-    min-height: 400px;   /* fixed */
-    height: auto;        /* fixed */
+    min-height: 400px;
+    height: auto;
     box-shadow: 0 8px 20px rgba(0,0,0,0.1);
 }
 
@@ -345,7 +382,7 @@ a {
     display: flex;
     gap: 10px;
     overflow-x: auto;
-    scroll-behavior: smooth; /* enhancement */
+    scroll-behavior: smooth;
 }
 
 .food-images img {
@@ -429,6 +466,7 @@ a {
         font-size: 28px;
     }
 }
+
 /* RECEIPT CONTAINER */
 .receipt {
     background-color: #fffef0; /* Classic receipt off-white */
@@ -491,6 +529,7 @@ a {
 .pay-btn:hover {
     background: #219150;
 }
+
 .thank-you-card {
     background: white;
     padding: 40px;

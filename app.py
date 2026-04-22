@@ -21,11 +21,12 @@ def register():
     db = None
     try:
         data = request.get_json(force=True)
+
         name = data.get("name")
         email = data.get("email")
         password = data.get("password")
 
-        if not name or not email or not password:
+        if not all([name, email, password]):
             return jsonify({"message": "Missing fields"}), 400
 
         db = get_db()
@@ -43,14 +44,14 @@ def register():
         )
 
         db.commit()
-        return jsonify({"message": "Registration successful"}), 201
+        return jsonify({"message": "Success"}), 201
 
     except Exception as e:
-        return jsonify({"message": str(e)}), 500
+        print(e)
+        return jsonify({"message": "Internal server error"}), 500
 
     finally:
-        if db and db.is_connected():
-            cursor.close()
+        if db:
             db.close()
 
 
@@ -295,7 +296,143 @@ def generate_bill():
         if db:
             db.close()
 
+@app.route('/api/bill/create', methods=['POST'])
+def create_bill():
+    data = request.get_json()
+    
+    # Map the JS keys to your Python variables
+    order_id = data.get('order_id')
+    payment_mode = data.get('payment_mode')
+    total = data.get('total_amount')
+    cust_name = data.get('customer_name')
+    bill_date = data.get('bill_date')
 
+    cursor = mysql.connection.cursor()
+    try:
+        # Match your DESC Bill columns exactly:
+        # Order_ID, Payment_Mode, Bill_Date, Total_Amount, Customer_Name
+        query = """
+            INSERT INTO Bill (Order_ID, Payment_Mode, Bill_Date, Total_Amount, Customer_Name) 
+            VALUES (%s, %s, %s, %s, %s)
+        """
+        cursor.execute(query, (order_id, payment_mode, bill_date, total, cust_name))
+        
+        # --- THE MOST IMPORTANT LINE ---
+        mysql.connection.commit() 
+        
+        return jsonify({"message": "Bill record inserted!"}), 201
+    except Exception as e:
+        print(f"Error inserting bill: {e}")
+        return jsonify({"message": str(e)}), 500
+    finally:
+        cursor.close()@app.route('/api/bill/create', methods=['POST'])
+def create_bill():
+    db = None
+    try:
+        data = request.get_json()
+
+        order_id = data.get('order_id')
+        payment_mode = data.get('payment_mode')
+        total = data.get('total_amount')
+        cust_name = data.get('customer_name')
+        bill_date = data.get('bill_date')
+
+        db = get_db()
+        cursor = db.cursor()
+
+        query = """
+            INSERT INTO Bill 
+            (Order_ID, Payment_Mode, Bill_Date, Total_Amount, Customer_Name) 
+            VALUES (%s, %s, %s, %s, %s)
+        """
+
+        cursor.execute(query, (order_id, payment_mode, bill_date, total, cust_name))
+        db.commit()
+
+        return jsonify({"message": "Bill record inserted!"}), 201
+
+    except Exception as e:
+        if db:
+            db.rollback()
+        return jsonify({"message": str(e)}), 500
+
+    finally:
+        if db:
+            cursor.close()
+            db.close()
+@app.route("/api/order/checkout", methods=["POST"])
+def checkout():
+    db = None
+    try:
+        data = request.get_json(force=True)
+
+        customer_id = data.get("customer_id")
+        table_id = data.get("table_id")
+        items = data.get("items")
+        payment_mode = data.get("payment_mode", "Cash")
+
+        if not customer_id or not table_id or not items:
+            return jsonify({"message": "Missing data"}), 400
+
+        db = get_db()
+        cursor = db.cursor(dictionary=True)
+
+        # 1. Create Order
+        cursor.execute("""
+            INSERT INTO Orders (customer_id, Table_ID, Order_Date, Order_Time)
+            VALUES (%s, %s, CURDATE(), CURTIME())
+        """, (customer_id, table_id))
+
+        order_id = cursor.lastrowid
+
+        total = 0
+
+        # 2. Insert Order Items + Calculate Total
+        for item in items:
+            item_id = item.get("item_id")
+            qty = item.get("qty", 1)
+
+            if not item_id:
+                continue
+
+            # get price from menu
+            cursor.execute("SELECT Price FROM Menu WHERE Item_ID=%s", (item_id,))
+            menu_item = cursor.fetchone()
+
+            if not menu_item:
+                continue
+
+            price = menu_item["Price"]
+            total += price * qty
+
+            cursor.execute("""
+                INSERT INTO Order_Detail (Order_ID, Item_ID, Quantity)
+                VALUES (%s, %s, %s)
+            """, (order_id, item_id, qty))
+
+        # 3. Create Bill
+        cursor.execute("""
+            INSERT INTO Bill (Order_ID, Payment_Mode, Bill_Date, Total_Amount, Customer_Name)
+            VALUES (%s, %s, CURDATE(), %s, %s)
+        """, (order_id, payment_mode, total, f"Customer-{customer_id}"))
+
+        db.commit()
+
+        return jsonify({
+            "message": "Order + Bill created successfully",
+            "order_id": order_id,
+            "total": total
+        }), 201
+
+    except Exception as e:
+        if db:
+            db.rollback()
+        return jsonify({"message": str(e)}), 500
+
+    finally:
+        if db:
+            cursor.close()
+            db.close()
 # ---------------- RUN ----------------
 if __name__ == "__main__":
     app.run(debug=True, port=5000)

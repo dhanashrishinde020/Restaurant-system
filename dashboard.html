@@ -12,22 +12,27 @@
     <div class="nav-logo">RestoManager</div>
     <ul class="nav-links">
         <li><a href="#" onclick="showSection('dash-home')">Dashboard</a></li>
-        <li><a href="#" onclick="showSection('cust-section')">Customers</a></li>
+        
         <li><a href="#" onclick="showSection('table-section')">Tables</a></li>
         <li><a href="#" onclick="showSection('menu-section')">Menu</a></li>
         <li><a href="#" onclick="showSection('bill-section')">Billing</a></li>
     </ul>
     <div class="nav-right">
         <span id="nav-user"></span>
-        <button class="logout-btn" onclick="logout()">Logout</button>
+        <button onclick="logout()" class="btn-logout" style="background-color: #ff4d4d; color: white; border: none; padding: 10px 20px; cursor: pointer; border-radius: 5px;">
+    Logout
+</button>
     </div>
 </nav>
-
+<div class="overlay-content">
+    <h1 id="welcomeText">Welcome 🍽️</h1>
+    <p>Manage your restaurant efficiently</p>
+</div>
 <div class="container">
 
-    <div id="dash-home" class="content-section">
+    <div id="dash-home" class="content-section" >
     <div class="premium-hero">
-        <h1 id="welcome">Welcome, Artisan</h1>
+        <h1 id="welcome">Welcome, Maria's Restaurant</h1>
         <div class="hero-divider"></div>
         <p>The floor is yours. Manage your tables and orders with precision.</p>
     </div>
@@ -64,7 +69,7 @@
 
     
     
-           <div id="customer-section" class="content-section">
+           <div id="customer-section" class="content-section" style="display:none;">
         <div class="card">
 
     <h2>Customer Details</h2>
@@ -223,7 +228,7 @@
                 </ul>
             
             
-            <button onclick="showSection('bill-section')" class="next-btn">Proceed to Billing</button>
+            
         </div>
     </div>
 </div>
