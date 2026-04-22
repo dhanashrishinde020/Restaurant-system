@@ -62,12 +62,17 @@
     </div>
 </div>
 
-    <div id="cust-section" class="content-section" style="display:none;">
+    
+    
+           <div id="customer-section" class="content-section">
         <div class="card">
-            <h2>Add Customer</h2>
-            <input type="text" id="cust_name" placeholder="Customer Name">
-            <input type="text" id="cust_phone" placeholder="Phone Number">
-            <button onclick="addcustomer()">Add Customer</button>
+
+    <h2>Customer Details</h2>
+    <input type="text" id="customer_name" placeholder="Name">
+    <input type="text" id="customer_phone" placeholder="Phone">
+    
+    <button onclick="addCustomer()">Proceed to Tables</button>
+</div>
         </div>
     </div>
 
@@ -210,28 +215,26 @@
 <h3>Total: ₹<span id="order-total">0</span></h3>
 
 <!-- FIX THIS -->
-<button onclick="placeOrder()">Confirm Order & Save</button>
+<button onclick="confirmAndBill()">Confirm & Generate Bill</button>
 
         <div class="order-summary">
             <h3>Current Order Items</h3>
             <ul id="order-list">
                 </ul>
-            <div class="total-bar">
-                <strong>Total Amount: ₹<span id="order-total">0</span></strong>
-            </div>
-            <button onclick="finalizeOrder()" class="next-btn">Confirm Order & Save</button>
+            
+            
             <button onclick="showSection('bill-section')" class="next-btn">Proceed to Billing</button>
         </div>
     </div>
 </div>
 
-   <div id="bill-section" class="content-section" style="display:none;">
-    <div class="card">
-        <h2>Billing & Payment</h2>
-        <input id="bill_customer" placeholder="Confirm Customer Name">
-        <button onclick="generateBill()" class="action-btn">Generate Bill</button>
+   <div id="billing-section" class="content-section" style="display: none;">
+    <h2 style="text-align: center;">Final Bill</h2>
+    <div id="bill_output">
+        </div>
+</div>
         
-        <div id="bill_output" style="margin-top: 20px;"></div>
+        
     </div>
 </div>
 

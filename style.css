@@ -172,7 +172,17 @@ body {
     align-items: center;
     text-align: center; /* removed duplicate background */
 }
-
+.content-section {
+    display: none; /* Hidden by default */
+}
+#bill_output {
+    max-width: 400px;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    background-color: #fff;
+    font-family: 'Courier New', Courier, monospace;
+}
 .start-page h1 {
     font-size: 40px;
     margin-bottom: 10px;

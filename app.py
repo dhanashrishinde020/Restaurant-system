@@ -223,17 +223,18 @@ def create_order():
     try:
         data = request.get_json(force=True)
 
-        customer_id = data.get("customer_id")
-        table_id = data.get("table_id")
-        items = data.get("items")
+        customer_id = data.get('customer_id')
+        table_id = data.get('table_id')
+        items = data.get('items')
 
+        #  VALIDATION
         if not customer_id or not table_id or not items:
-            return jsonify({"message": "Missing order data"}), 400
+            return jsonify({"message": "Missing data"}), 400
 
         db = get_db()
         cursor = db.cursor()
 
-        # Insert order
+        #  Insert order
         cursor.execute("""
             INSERT INTO Orders (customer_id, Table_ID, Order_Date, Order_Time)
             VALUES (%s, %s, CURDATE(), CURTIME())
@@ -241,41 +242,36 @@ def create_order():
 
         order_id = cursor.lastrowid
 
-        # Insert order items
+        #  Insert items
         for item in items:
+            if not item.get('item_id'):
+                continue
+
             cursor.execute("""
                 INSERT INTO Order_Detail (Order_ID, Item_ID, Quantity)
                 VALUES (%s, %s, %s)
-            """, (
-                order_id,
-                item.get("item_id"),
-                item.get("qty", 1)
-            ))
+            """, (order_id, item['item_id'], item.get('qty', 1)))
 
         db.commit()
 
-        return jsonify({
-            "message": "Order created",
-            "order_id": order_id
-        }), 201
+        return jsonify({"message": "Order saved", "order_id": order_id}), 201
 
     except Exception as e:
         if db:
             db.rollback()
+        print("ERROR:", str(e))  #  CHECK THIS IN TERMINAL
         return jsonify({"message": str(e)}), 500
 
     finally:
-        if db and db.is_connected():
-            cursor.close()
+        if db:
             db.close()
-
 
 # ---------------- BILL ----------------
 @app.route("/api/bill/generate", methods=["POST"])
 def generate_bill():
     db = None
     try:
-        data = request.get_json(force=True)
+        data = request.get_json()
 
         customer = data.get("customer")
         total = data.get("total")
@@ -284,7 +280,7 @@ def generate_bill():
         cursor = db.cursor()
 
         cursor.execute("""
-            INSERT INTO bill (Customer_Name, Total_Amount, Payment_Mode, Bill_Date)
+            INSERT INTO Bill (Customer_Name, Total_Amount, Payment_Mode, Bill_Date)
             VALUES (%s, %s, %s, CURDATE())
         """, (customer, total, "Cash"))
 
@@ -296,8 +292,7 @@ def generate_bill():
         return jsonify({"message": str(e)}), 500
 
     finally:
-        if db and db.is_connected():
-            cursor.close()
+        if db:
             db.close()
 
 
